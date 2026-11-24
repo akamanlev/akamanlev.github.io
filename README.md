@@ -1,4 +1,4 @@
-# May Yu Ya Maw: portfolio site
+# Myportfolio site
 
 Plain HTML, CSS and JavaScript with no build step. Files:
 
