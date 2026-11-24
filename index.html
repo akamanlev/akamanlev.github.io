@@ -280,8 +280,6 @@ transcript.<span class="k">describe</span>()</div>
       <div class="df-wrap">
         <table class="df" id="df">
           <thead><tr>
-            <th data-k="idx" scope="col" style="cursor:default"></th>
-            <th data-k="code" scope="col">code</th>
             <th data-k="name" scope="col">subject</th>
             <th data-k="year" scope="col" class="hide-sm">year</th>
             <th data-k="area" scope="col" class="hide-sm">area</th>
@@ -439,18 +437,18 @@ function renderDF(){
   rows.sort(function(a,b){
     var A=a[sortK], B=b[sortK];
     if(A<B) return -sortDir; if(A>B) return sortDir;
-    return a.code<b.code?-1:1;
+    return a.name<b.name?-1:1;
   });
   document.querySelectorAll("#df th").forEach(function(th){ th.setAttribute("aria-sort", th.dataset.k===sortK ? (sortDir>0?"ascending":"descending") : "none"); });
   var tb=$("#df tbody"); tb.innerHTML="";
   rows.forEach(function(m,i){
     var tr=h("tr",{class:"row", tabindex:"0", "aria-expanded": String(openCode===m.code), "data-code":m.code});
-    tr.innerHTML='<td class="idx">'+i+'</td><td>'+m.code+'</td><td class="name">'+esc(m.name)+'</td><td class="hide-sm">'+m.year+'</td><td class="hide-sm">'+esc(m.area)+'</td><td class="num">'+(m.nproj||'<span style="color:var(--muted)">–</span>')+'</td><td>'+(m.status==="Complete"?'<span style="color:var(--muted)">complete</span>':'<span class="pill">'+esc(m.status.toLowerCase())+'</span>')+'</td>';
+    tr.innerHTML='<td class="name">'+esc(m.name)+'</td><td class="hide-sm">'+m.year+'</td><td class="hide-sm">'+esc(m.area)+'</td><td class="num">'+(m.nproj||'<span style="color:var(--muted)">–</span>')+'</td><td>'+(m.status==="Complete"?'<span style="color:var(--muted)">complete</span>':'<span class="pill">'+esc(m.status.toLowerCase())+'</span>')+'</td>';
     tr.addEventListener("click", function(){ openCode = openCode===m.code?null:m.code; renderDF(); });
     tr.addEventListener("keydown", function(e){ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); tr.click(); } });
     tb.appendChild(tr);
     if(openCode===m.code){
-      var d=h("tr",{class:"detail"}), td=h("td",{colspan:"7"});
+      var d=h("tr",{class:"detail"}), td=h("td",{colspan:"5"});
       var pj=(m.projects||[]).map(projById).filter(Boolean);
       td.innerHTML='<div>'+esc(m.summary)+'</div><div class="kv">'+
         (m.skills&&m.skills.length?'<span>skills</span><span class="chips">'+m.skills.map(function(s){return '<span class="tag">'+esc(s)+'</span>';}).join("")+'</span>':'')+
@@ -461,7 +459,7 @@ function renderDF(){
       d.appendChild(td); tb.appendChild(d);
     }
   });
-  $("#dffoot").textContent = "["+rows.length+" rows × 7 columns]  sorted by "+sortK+(sortDir>0?" ↑":" ↓");
+  $("#dffoot").textContent = rows.length+" subjects · sorted by "+({name:"subject",nproj:"projects"}[sortK]||sortK)+(sortDir>0?" ↑":" ↓");
 }
 function openModule(code){ area="All"; document.querySelectorAll("#areaChips .chip").forEach(function(c){c.setAttribute("aria-pressed", c.dataset.a==="All");}); openCode=code; renderDF(); var r=document.querySelector('#df tr[data-code="'+code+'"]'); if(r) r.scrollIntoView({block:"center", behavior:"smooth"}); }
 
@@ -469,7 +467,7 @@ function openModule(code){ area="All"; document.querySelectorAll("#areaChips .ch
 var cols=["2024","2025","2026","Work"];
 var ev={};
 function add(skill,col,src){ if(!skill) return; ev[skill]=ev[skill]||{}; (ev[skill][col]=ev[skill][col]||[]).push(src); }
-mods.forEach(function(m){ (m.skills||[]).forEach(function(s){ add(s,String(m.year),m.code); }); });
+mods.forEach(function(m){ (m.skills||[]).forEach(function(s){ add(s,String(m.year),m.name); }); });
 D.projects.forEach(function(p){ var c=p.year<2024?"Work":String(p.year); if(cols.indexOf(c)<0) c="Work"; (p.skills||[]).forEach(function(s){ add(s,c,p.title); }); });
 D.experience.forEach(function(x){ (x.skills||[]).forEach(function(s){ add(s,"Work",x.role); }); });
 function total(s){ return cols.reduce(function(a,c){return a+((ev[s][c]||[]).length);},0); }
@@ -508,7 +506,8 @@ function drawHeat(){
 /* ---------- projects ---------- */
 var CATS={"AI & ML":["Machine learning","NLP","Computer vision","Search algorithms","Deep learning","Classification"],"Data & SQL":["SQL","NoSQL","MapReduce","Data warehousing","Data visualisation","Data mining","Data cleaning","Database design","Web analytics"],"Web":["HTML / CSS","JavaScript","API development"],"Software":["Algorithms","Data structures","Simulation","Java","Software testing"],"Business":["Digital strategy","E-commerce"]};
 var pcat="All", pskill=null;
-function projText(p){ return [p.title,p.kind,p.summary,p.module,(p.skills||[]).join(" "),(p.tools||[]).join(" ")].join(" ").toLowerCase(); }
+function modName(c){ var m=mods.filter(function(x){return x.code===c;})[0]; return m?m.name:""; }
+function projText(p){ return [p.title,p.kind,p.summary,modName(p.module),(p.skills||[]).join(" "),(p.tools||[]).join(" ")].join(" ").toLowerCase(); }
 function renderChips(){
   var keys=["All"].concat(Object.keys(CATS));
   var html=keys.map(function(k){return '<button type="button" class="chip" data-c="'+esc(k)+'" aria-pressed="'+(!pskill&&pcat===k)+'">'+esc(k)+"</button>";}).join("");
@@ -532,7 +531,7 @@ function renderCards(){
       '<div class="meta"><span>'+esc(p.kind||"")+'</span><span>'+(p.status?'<span class="pill">'+esc(p.status)+'</span> ':'')+p.year+'</span></div>'+
       '<h3>'+esc(p.title)+'</h3><p>'+esc(p.summary)+'</p>'+
       (p.metrics&&p.metrics.length?'<div class="metrics">'+p.metrics.map(function(x){return '<div><b title="'+esc(x.v)+'">'+esc(x.v)+'</b><span>'+esc(x.k)+'</span></div>';}).join("")+'</div>':'')+
-      '<div class="tags">'+(p.module?'<button type="button" class="tag linkish" style="text-decoration:none;color:var(--accent)" data-m="'+p.module+'">'+p.module+'</button>':'')+(p.tools||[]).map(function(t){return '<span class="tag">'+esc(t)+'</span>';}).join("")+'</div>'+
+      '<div class="tags">'+(p.module?'<button type="button" class="tag linkish" style="text-decoration:none;color:var(--accent)" data-m="'+p.module+'">'+esc(modName(p.module))+'</button>':'')+(p.tools||[]).map(function(t){return '<span class="tag">'+esc(t)+'</span>';}).join("")+'</div>'+
       (p.links&&p.links.length?'<div class="chips">'+p.links.map(function(l){return '<a class="chip" href="'+esc(l.url)+'" target="_blank" rel="noopener">'+esc(l.label)+' ↗</a>';}).join("")+'</div>':'')+
       '</article>';
   }).join("");
@@ -557,7 +556,7 @@ var CMDS={
     var y=opt(args,"--year"), a=opt(args,"--area");
     var r=mods.filter(function(m){ return (!y||String(m.year)===y) && (!a||m.area.toLowerCase().indexOf(a.toLowerCase())>-1); });
     if(!r.length) return "Empty DataFrame";
-    return pad("code",9)+pad("subject",44)+pad("year",6)+"area\n"+r.map(function(m){return pad(m.code,9)+pad(m.name,44)+pad(m.year,6)+m.area;}).join("\n")+"\n["+r.length+" rows]";
+    return pad("subject",50)+pad("year",6)+"area\n"+r.map(function(m){return pad(m.name,50)+pad(m.year,6)+m.area;}).join("\n")+"\n["+r.length+" rows]";
   },
   skills:function(args){ var n=parseInt(args[0],10)||10; return Object.keys(ev).sort(function(a,b){return total(b)-total(a);}).slice(0,n).map(function(s){ var t=total(s); return pad(s,24)+"█".repeat(t)+" "+t; }).join("\n"); },
   projects:function(args){ var q=args.join(" ").toLowerCase(); var r=D.projects.filter(function(p){return !q||projText(p).indexOf(q)>-1;}); return r.length? r.map(function(p){return pad(p.id,12)+pad(p.title,40)+p.year;}).join("\n")+"\n\ntip: open <project-id>" : "no projects match '"+q+"'"; },
