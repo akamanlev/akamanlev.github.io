@@ -161,7 +161,7 @@ window.PORTFOLIO = {
       kind: "Computer vision",
       summary: "Compared three classifiers on 4,000+ Kaggle flower photos across 5 species: k-nearest neighbours on handcrafted features, a multi-layer perceptron, and a convolutional neural network.",
       metrics: [{ k: "Images", v: "4,000+" }, { k: "Classes", v: "5" }, { k: "Models compared", v: "3" }],
-      skills: ["Computer vision", "Machine learning", "Deep learning", "Model evaluation", "Python"], tools: ["Python", "scikit-learn"], links: [] },
+      skills: ["Computer vision", "Machine learning", "Deep learning", "Model evaluation", "Python"], tools: ["Python", "scikit-learn"], links: [{ label: "Try the CNN demo", url: "#cnn" }] },
     { id: "romania", title: "Route finding with A*", module: "CSCI218", year: 2026,
       kind: "AI search",
       summary: "Implemented breadth-first, depth-first, uniform-cost and A* search on the Romania road map, then compared explored states, path cost and runtime to show how a straight-line-distance heuristic beats UCS.",
