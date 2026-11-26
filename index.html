@@ -169,9 +169,8 @@ table.df{width:100%;border-collapse:collapse;font:400 13.5px var(--font-mono);fo
 .scat h3 span{font:500 11px var(--font-mono);color:var(--muted)}
 .srow{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;padding:6px 6px;margin:0 -6px;border:0;border-radius:5px;background:none;color:var(--fg);font:400 14px var(--font-body);text-align:left;cursor:pointer}
 .srow:hover{background:var(--sunken)} .srow:hover .nm{color:var(--accent)}
-.dots{display:flex;gap:3px;flex:none}
-.dots i{width:8px;height:8px;border-radius:50%;background:var(--line)}
-.dots i.on{background:var(--accent)}
+.ev{flex:none;font:500 11px var(--font-mono);color:var(--muted);white-space:nowrap}
+.srow:hover .ev{color:var(--accent)}
 .toolstrip{margin-top:18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px 24px;padding-top:16px;border-top:1px dashed var(--line)}
 .toolstrip h4{margin:0 0 6px;font:500 11px var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .toolstrip .chips .tag{font-size:12px}
@@ -373,7 +372,7 @@ transcript.<span class="k">describe</span>()</div>
       <div class="head">
         <div>
           <h2>Skills</h2>
-          <p>Grouped by what I use them for. The dots show how many subjects, projects and jobs I've used each skill in. Click a skill to see the projects behind it.</p>
+          <p>Grouped by what I use them for. Each skill notes where I've used it. Click one to see the projects behind it.</p>
         </div>
       </div>
       <div class="skillcats" id="skillcats"></div>
@@ -576,6 +575,16 @@ function add(skill,col,src){ if(!skill) return; ev[skill]=ev[skill]||{}; (ev[ski
 mods.forEach(function(m){ (m.skills||[]).forEach(function(s){ add(s,String(m.year),m.name); }); });
 D.projects.forEach(function(p){ var c=p.year<2024?"Work":String(p.year); if(cols.indexOf(c)<0) c="Work"; (p.skills||[]).forEach(function(s){ add(s,c,p.title); }); });
 D.experience.forEach(function(x){ (x.skills||[]).forEach(function(s){ add(s,"Work",x.role); }); });
+var kind={};
+function addK(skill,k){ if(!skill) return; kind[skill]=kind[skill]||{m:0,p:0,w:0}; kind[skill][k]++; }
+mods.forEach(function(m){ (m.skills||[]).forEach(function(s){ addK(s,"m"); }); });
+D.projects.forEach(function(p){ (p.skills||[]).forEach(function(s){ addK(s,"p"); }); });
+D.experience.forEach(function(x){ (x.skills||[]).forEach(function(s){ addK(s,"w"); }); });
+function evLabel(s){ var k=kind[s]||{m:0,p:0,w:0}, out=[];
+  if(k.p) out.push(k.p+(k.p>1?" projects":" project"));
+  if(k.w) out.push("work");
+  if(!out.length && k.m) out.push("coursework");
+  return out.join(" · "); }
 function total(s){ return cols.reduce(function(a,c){return a+((ev[s][c]||[]).length);},0); }
 var skillRows=Object.keys(ev).sort(function(a,b){return total(b)-total(a) || a.localeCompare(b);}).slice(0,16);
 var maxC=1; skillRows.forEach(function(s){ cols.forEach(function(c){ maxC=Math.max(maxC,(ev[s][c]||[]).length); }); });
@@ -594,8 +603,8 @@ function drawHeat(){
   $("#skillcats").innerHTML=cats.filter(function(c){return c[1].length;}).map(function(c){
     var list=c[1].slice().sort(function(a,b){return total(b)-total(a)||a.localeCompare(b);}).slice(0,7);
     return '<div class="scat"><h3>'+esc(c[0])+'<span>'+c[1].length+' skills</span></h3>'+list.map(function(k){
-      var t=total(k), on=Math.max(1,Math.round(5*t/maxT)), src=[]; cols.forEach(function(cc){ src=src.concat(ev[k][cc]||[]); });
-      return '<button type="button" class="srow" data-s="'+esc(k)+'" title="'+esc("Used in: "+src.join(", "))+'"><span class="nm">'+esc(k)+'</span><span class="dots" aria-label="'+t+' uses">'+[0,1,2,3,4].map(function(i){return '<i class="'+(i<on?"on":"")+'"></i>';}).join("")+'</span></button>';
+      var src=[]; cols.forEach(function(cc){ src=src.concat(ev[k][cc]||[]); });
+      return '<button type="button" class="srow" data-s="'+esc(k)+'" title="'+esc("Used in: "+src.join(", "))+'"><span class="nm">'+esc(k)+'</span><span class="ev">'+esc(evLabel(k))+'</span></button>';
     }).join("")+'</div>';
   }).join("");
   $("#skillcats").querySelectorAll(".srow").forEach(function(b){ b.addEventListener("click",function(){ filterSkill(b.dataset.s); scrollToId("projects"); }); });
