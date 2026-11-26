@@ -134,6 +134,34 @@ table.df{width:100%;border-collapse:collapse;font:400 13.5px var(--font-mono);fo
 @media (max-width:640px){ .df .hide-sm{display:none} }
 .df-foot{font:400 12px var(--font-mono);color:var(--muted);padding:8px 2px}
 
+/* learning path */
+:root{ --a1:#2a9d8f; --a2:#e9a23b; --a3:#5b6ee1; --a4:#d1495b; --a5:#8f5bd6; --a6:#4fa34f; --a7:#7a8a94; }
+.areabar{display:flex;height:12px;border-radius:99px;overflow:hidden;margin-bottom:12px;background:var(--sunken)}
+.areabar span{display:block;height:100%;transition:opacity .2s}
+.arealeg{margin-bottom:24px}
+.arealeg .chip i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px;vertical-align:0}
+.arealeg .chip b{font-weight:500;color:var(--muted);margin-left:6px}
+.arealeg .chip[aria-pressed="true"] b{color:inherit;opacity:.7}
+.path{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;position:relative}
+@media (max-width:900px){ .path{grid-template-columns:minmax(0,1fr)} }
+.yr{display:flex;flex-direction:column;gap:10px;min-width:0}
+.yr-head{display:flex;align-items:baseline;gap:10px;padding-bottom:10px;border-bottom:2px solid var(--fg);margin-bottom:4px}
+.yr-head b{font:800 1.6rem/1 var(--font-display);letter-spacing:-.02em}
+.yr-head span{font:500 12px var(--font-mono);color:var(--muted)}
+.subj{position:relative;text-align:left;width:100%;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 14px 12px 16px;color:var(--fg);font:inherit;cursor:pointer;transition:opacity .2s,border-color .15s,transform .15s}
+.subj::before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:3px;border-radius:0 3px 3px 0;background:var(--ac)}
+.subj:hover{border-color:var(--ac);transform:translateY(-1px)}
+.subj.dim{opacity:.28}
+.subj .ar{font:500 11px var(--font-mono);letter-spacing:.04em;color:var(--muted);display:flex;justify-content:space-between;gap:8px}
+.subj .nm{display:block;font:600 15px/1.3 var(--font-body);margin:3px 0 6px}
+.subj .sk{display:flex;flex-wrap:wrap;gap:4px}
+.subj .sk span{font:500 11px var(--font-mono);padding:1px 7px;border-radius:99px;background:var(--sunken);color:var(--muted)}
+.subj .more{display:none;margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);font-size:14px;cursor:auto}
+.subj[aria-expanded="true"]{border-color:var(--ac)}
+.subj[aria-expanded="true"] .more{display:block}
+.subj .more p{margin:0 0 8px}
+.subj .more .row2{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px;align-items:center}
+.subj .more .lbl{font:500 11px var(--font-mono);color:var(--muted);margin-right:4px}
 /* skills heatmap */
 .skills-grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:24px;align-items:start}
 @media (max-width:900px){ .skills-grid{grid-template-columns:minmax(0,1fr)} }
@@ -300,23 +328,12 @@ transcript.<span class="k">describe</span>()</div>
       <div class="head">
         <div>
           <h2>Coursework</h2>
-          <p>Every subject in my Bachelor of Computer Science (Big Data). Click a row to see what I learned and built in it.</p>
+          <p>My Bachelor of Computer Science (Big Data), year by year. Pick an area to highlight it, or open a subject to see what I learned and built.</p>
         </div>
       </div>
-      <div class="toolbar"><div class="chips" id="areaChips" role="group" aria-label="Filter subjects by area"></div></div>
-      <div class="df-wrap">
-        <table class="df" id="df">
-          <thead><tr>
-            <th data-k="name" scope="col">subject</th>
-            <th data-k="year" scope="col" class="hide-sm">year</th>
-            <th data-k="area" scope="col" class="hide-sm">area</th>
-            <th data-k="nproj" scope="col">projects</th>
-            <th data-k="status" scope="col">status</th>
-          </tr></thead>
-          <tbody></tbody>
-        </table>
-      </div>
-      <div class="df-foot" id="dffoot"></div>
+      <div class="areabar" id="areaBar" role="img" aria-label="Subjects by area"></div>
+      <div class="chips arealeg" id="areaChips" role="group" aria-label="Highlight subjects by area"></div>
+      <div class="path" id="path"></div>
     </div>
   </section>
 
@@ -481,43 +498,49 @@ var stats=[
 ];
 $("#describe").innerHTML = stats.map(function(s){return "<div><dt>"+s[0]+"</dt><dd>"+s[1]+"<small>"+esc(s[2])+"</small></dd></div>";}).join("");
 
-/* ---------- dataframe ---------- */
-var area="All", sortK="year", sortDir=-1, openCode=null;
-var areas=["All"].concat(D.areas.filter(function(a){return mods.some(function(m){return m.area===a;});}));
-$("#areaChips").innerHTML = areas.map(function(a){return '<button type="button" class="chip" aria-pressed="'+(a===area)+'" data-a="'+esc(a)+'">'+esc(a)+"</button>";}).join("");
-$("#areaChips").addEventListener("click", function(e){ var b=e.target.closest(".chip"); if(!b) return; area=b.dataset.a; this.querySelectorAll(".chip").forEach(function(c){c.setAttribute("aria-pressed", c===b);}); renderDF(); });
-document.querySelectorAll("#df th").forEach(function(th){ th.addEventListener("click", function(){ var k=th.dataset.k; if(k==="idx") return; if(sortK===k) sortDir*=-1; else { sortK=k; sortDir=(k==="nproj"||k==="year")?-1:1; } renderDF(); }); });
+/* ---------- learning path ---------- */
+var area="All", openCode=null;
+var areaList=D.areas.filter(function(a){return mods.some(function(m){return m.area===a;});});
+function acol(a){ return "var(--a"+((areaList.indexOf(a)%7)+1)+")"; }
 function projById(id){ return D.projects.filter(function(p){return p.id===id;})[0]; }
-function renderDF(){
-  var rows=mods.filter(function(m){return area==="All"||m.area===area;});
-  rows.sort(function(a,b){
-    var A=a[sortK], B=b[sortK];
-    if(A<B) return -sortDir; if(A>B) return sortDir;
-    return a.name<b.name?-1:1;
-  });
-  document.querySelectorAll("#df th").forEach(function(th){ th.setAttribute("aria-sort", th.dataset.k===sortK ? (sortDir>0?"ascending":"descending") : "none"); });
-  var tb=$("#df tbody"); tb.innerHTML="";
-  rows.forEach(function(m,i){
-    var tr=h("tr",{class:"row", tabindex:"0", "aria-expanded": String(openCode===m.code), "data-code":m.code});
-    tr.innerHTML='<td class="name">'+esc(m.name)+'</td><td class="hide-sm">'+m.year+'</td><td class="hide-sm">'+esc(m.area)+'</td><td class="num">'+(m.nproj||'<span style="color:var(--muted)">–</span>')+'</td><td>'+(m.status==="Complete"?'<span style="color:var(--muted)">complete</span>':'<span class="pill">'+esc(m.status.toLowerCase())+'</span>')+'</td>';
-    tr.addEventListener("click", function(){ openCode = openCode===m.code?null:m.code; renderDF(); });
-    tr.addEventListener("keydown", function(e){ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); tr.click(); } });
-    tb.appendChild(tr);
-    if(openCode===m.code){
-      var d=h("tr",{class:"detail"}), td=h("td",{colspan:"5"});
-      var pj=(m.projects||[]).map(projById).filter(Boolean);
-      td.innerHTML='<div>'+esc(m.summary)+'</div><div class="kv">'+
-        (m.skills&&m.skills.length?'<span>skills</span><span class="chips">'+m.skills.map(function(s){return '<span class="tag">'+esc(s)+'</span>';}).join("")+'</span>':'')+
-        (m.tools&&m.tools.length?'<span>tools</span><span class="chips">'+m.tools.map(function(s){return '<span class="tag">'+esc(s)+'</span>';}).join("")+'</span>':'')+
-        (pj.length?'<span>projects</span><span>'+pj.map(function(p){return '<button type="button" class="linkish" data-p="'+p.id+'">'+esc(p.title)+'</button>';}).join(", ")+'</span>':'')+
-        '</div>';
-      td.querySelectorAll("[data-p]").forEach(function(b){ b.addEventListener("click", function(e){ e.stopPropagation(); showProject(b.dataset.p); }); });
-      d.appendChild(td); tb.appendChild(d);
-    }
-  });
-  $("#dffoot").textContent = rows.length+" subjects · sorted by "+({name:"subject",nproj:"projects"}[sortK]||sortK)+(sortDir>0?" ↑":" ↓");
+$("#areaBar").innerHTML=areaList.map(function(a){ var n=mods.filter(function(m){return m.area===a;}).length; return '<span data-a="'+esc(a)+'" title="'+esc(a)+': '+n+'" style="flex:'+n+';background:'+acol(a)+'"></span>'; }).join("");
+$("#areaChips").innerHTML='<button type="button" class="chip" data-a="All" aria-pressed="true">All<b>'+mods.length+'</b></button>'+areaList.map(function(a){ var n=mods.filter(function(m){return m.area===a;}).length; return '<button type="button" class="chip" data-a="'+esc(a)+'" aria-pressed="false"><i style="background:'+acol(a)+'"></i>'+esc(a)+'<b>'+n+'</b></button>'; }).join("");
+$("#areaChips").addEventListener("click", function(e){ var b=e.target.closest(".chip"); if(!b) return; area=(area===b.dataset.a&&area!=="All")?"All":b.dataset.a; this.querySelectorAll(".chip").forEach(function(c){c.setAttribute("aria-pressed", c.dataset.a===area);}); applyArea(); });
+function applyArea(){
+  document.querySelectorAll("#path .subj").forEach(function(c){ c.classList.toggle("dim", area!=="All" && c.dataset.area!==area); });
+  document.querySelectorAll("#areaBar span").forEach(function(sp){ sp.style.opacity = (area==="All"||sp.dataset.a===area)?1:.25; });
 }
-function openModule(code){ area="All"; document.querySelectorAll("#areaChips .chip").forEach(function(c){c.setAttribute("aria-pressed", c.dataset.a==="All");}); openCode=code; renderDF(); var r=document.querySelector('#df tr[data-code="'+code+'"]'); if(r) r.scrollIntoView({block:"center", behavior:"smooth"}); }
+function renderPath(){
+  var years=[]; mods.forEach(function(m){ if(years.indexOf(m.year)<0) years.push(m.year); }); years.sort();
+  var P=$("#path"); P.innerHTML="";
+  years.forEach(function(y,yi){
+    var list=mods.filter(function(m){return m.year===y;}).sort(function(a,b){ return areaList.indexOf(a.area)-areaList.indexOf(b.area) || (a.name<b.name?-1:1); });
+    var col=h("div",{class:"yr"});
+    col.innerHTML='<div class="yr-head"><b>'+y+'</b><span>year '+(yi+1)+' · '+list.length+' subjects</span></div>';
+    list.forEach(function(m){
+      var c=h("div",{class:"subj", role:"button", tabindex:"0", "aria-expanded":String(openCode===m.code), "data-code":m.code, "data-area":m.area});
+      c.style.setProperty("--ac", acol(m.area));
+      var pj=(m.projects||[]).map(projById).filter(Boolean);
+      var right = m.status!=="Complete" ? '<span class="pill">in progress</span>' : (pj.length? pj.length+(pj.length>1?" projects":" project") : "");
+      c.innerHTML='<span class="ar"><span>'+esc(m.area)+'</span><span style="color:var(--muted)">'+right+'</span></span>'+
+        '<span class="nm">'+esc(m.name)+'</span>'+
+        '<span class="sk">'+(m.skills||[]).slice(0,3).map(function(x){return "<span>"+esc(x)+"</span>";}).join("")+'</span>'+
+        '<div class="more"><p>'+esc(m.summary)+'</p>'+
+          ((m.skills||[]).length>3?'<div class="row2"><span class="lbl">skills</span>'+m.skills.map(function(x){return '<span class="tag">'+esc(x)+'</span>';}).join("")+'</div>':'')+
+          ((m.tools||[]).length?'<div class="row2"><span class="lbl">tools</span>'+m.tools.map(function(x){return '<span class="tag">'+esc(x)+'</span>';}).join("")+'</div>':'')+
+          (pj.length?'<div class="row2"><span class="lbl">projects</span>'+pj.map(function(p){return '<button type="button" class="linkish" data-p="'+p.id+'">'+esc(p.title)+'</button>';}).join(" · ")+'</div>':'')+
+        '</div>';
+      function toggle(){ openCode = openCode===m.code?null:m.code; document.querySelectorAll("#path .subj").forEach(function(x){ x.setAttribute("aria-expanded", String(x.dataset.code===openCode)); }); }
+      c.addEventListener("click", function(e){ if(e.target.closest("[data-p]")||e.target.closest(".more")) return; toggle(); });
+      c.addEventListener("keydown", function(e){ if((e.key==="Enter"||e.key===" ")&&e.target===c){ e.preventDefault(); toggle(); } });
+      c.querySelectorAll("[data-p]").forEach(function(b){ b.addEventListener("click", function(e){ e.stopPropagation(); showProject(b.dataset.p); }); });
+      col.appendChild(c);
+    });
+    P.appendChild(col);
+  });
+  applyArea();
+}
+function openModule(code){ area="All"; document.querySelectorAll("#areaChips .chip").forEach(function(c){c.setAttribute("aria-pressed", c.dataset.a==="All");}); openCode=code; renderPath(); var r=document.querySelector('#path .subj[data-code="'+code+'"]'); if(r) r.scrollIntoView({block:"center", behavior:"smooth"}); }
 
 /* ---------- skills heatmap ---------- */
 var cols=["2024","2025","2026","Work"];
@@ -758,7 +781,7 @@ genPoints(); size(); seed(); if(reduce) runToConvergence(); else { draw(); timer
 
 /* ---------- boot ---------- */
 function redrawAll(){ draw(); }
-renderDF(); drawHeat(); renderChips(); renderCards(); applyTheme();
+renderPath(); drawHeat(); renderChips(); renderCards(); applyTheme();
 })();
 </script>
 </body>
