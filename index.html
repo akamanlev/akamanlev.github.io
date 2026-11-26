@@ -162,40 +162,60 @@ table.df{width:100%;border-collapse:collapse;font:400 13.5px var(--font-mono);fo
 .subj .more p{margin:0 0 8px}
 .subj .more .row2{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px;align-items:center}
 .subj .more .lbl{font:500 11px var(--font-mono);color:var(--muted);margin-right:4px}
-/* skills heatmap */
-.skills-grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:24px;align-items:start}
-@media (max-width:900px){ .skills-grid{grid-template-columns:minmax(0,1fr)} }
-.heat{border:1px solid var(--line);border-radius:var(--r);background:var(--surface);overflow-x:auto}
-.heat table{border-collapse:collapse;width:100%;font:400 13px var(--font-mono)}
-.heat th{font-weight:500;color:var(--muted);padding:8px 6px;text-align:center;white-space:nowrap;border-bottom:1px solid var(--line)}
-.heat th:first-child{text-align:left;padding-left:12px}
-.heat td{padding:3px;text-align:center}
-.heat td.sk{text-align:left;padding:4px 12px;white-space:nowrap;font-family:var(--font-body);font-size:14px}
-.heat tr:hover td.sk{color:var(--accent)}
-.heat tr{cursor:pointer}
-.cellbox{height:26px;min-width:44px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;font-variant-numeric:tabular-nums}
-.toolbox{display:flex;flex-direction:column;gap:16px}
-.toolbox h3{font:700 12px var(--font-mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:8px}
-.toolbox .chips .tag{font-size:12.5px;padding:4px 9px}
+/* skills */
+.skillcats{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.scat{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 16px 10px}
+.scat h3{display:flex;justify-content:space-between;align-items:baseline;font:700 1.02rem var(--font-display);margin-bottom:10px}
+.scat h3 span{font:500 11px var(--font-mono);color:var(--muted)}
+.srow{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;padding:6px 6px;margin:0 -6px;border:0;border-radius:5px;background:none;color:var(--fg);font:400 14px var(--font-body);text-align:left;cursor:pointer}
+.srow:hover{background:var(--sunken)} .srow:hover .nm{color:var(--accent)}
+.dots{display:flex;gap:3px;flex:none}
+.dots i{width:8px;height:8px;border-radius:50%;background:var(--line)}
+.dots i.on{background:var(--accent)}
+.toolstrip{margin-top:18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px 24px;padding-top:16px;border-top:1px dashed var(--line)}
+.toolstrip h4{margin:0 0 6px;font:500 11px var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.toolstrip .chips .tag{font-size:12px}
+.legend-note{font:400 12px var(--font-mono);color:var(--muted);display:flex;align-items:center;gap:8px;margin-top:10px}
 
 /* projects */
 .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:18px}
 .search{display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--surface);border-radius:var(--r);padding:0 10px;height:36px;flex:1 1 220px;max-width:320px}
 .search span{font:500 13px var(--font-mono);color:var(--accent)}
 .search input{border:0;outline:0;background:transparent;color:var(--fg);font:400 14px var(--font-mono);width:100%;min-width:0}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px}
-.card{display:flex;flex-direction:column;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px}
-.card.feat{border-color:color-mix(in srgb,var(--accent) 45%,var(--line))}
-.card .meta{display:flex;justify-content:space-between;gap:8px;font:500 12px var(--font-mono);color:var(--muted)}
-.card p{margin:0;font-size:14.5px}
-.metrics{display:flex;flex-wrap:wrap;gap:0;border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
-.metrics div{flex:1 1 0;padding:8px 10px;border-right:1px solid var(--line);min-width:0}
-.metrics div:last-child{border-right:0}
-.metrics b{display:block;font:700 1.05rem var(--font-display);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.metrics span{font:500 11px var(--font-mono);color:var(--muted)}
-.card .tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:auto}
 .pill{font:600 11px var(--font-mono);padding:2px 8px;border-radius:99px;background:color-mix(in srgb,var(--accent) 16%,transparent);color:var(--accent)}
 .empty{grid-column:1/-1;font:400 14px var(--font-mono);color:var(--muted);padding:24px;border:1px dashed var(--line);border-radius:var(--r);text-align:center}
+.sub-h{font:500 11.5px var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:26px 0 10px}
+.bento{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+@media (max-width:760px){ .bento{grid-template-columns:minmax(0,1fr)} }
+.feat{display:flex;flex-direction:column;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:22px;position:relative;overflow:hidden}
+.feat::after{content:"";position:absolute;inset:0 0 auto;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent-2))}
+.feat.hero-p{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:22px 32px;align-items:start}
+@media (max-width:760px){ .feat.hero-p{grid-template-columns:minmax(0,1fr)} }
+.feat .kind{font:500 12px var(--font-mono);color:var(--muted);display:flex;justify-content:space-between;gap:8px}
+.feat h3{font-size:1.3rem}
+.feat.hero-p h3{font-size:1.65rem}
+.feat p{margin:0;font-size:14.5px}
+.bignums{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:10px}
+.bignums div{border-left:2px solid var(--accent);padding:2px 0 2px 10px;min-width:0}
+.bignums b{display:block;font:800 1.5rem/1.1 var(--font-display);letter-spacing:-.02em;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.feat.hero-p .bignums{grid-template-columns:minmax(0,1fr)}
+.feat.hero-p .bignums b{font-size:2.2rem}
+.bignums span{font:500 11px var(--font-mono);color:var(--muted)}
+.tagrow{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-top:auto}
+.plist{border:1px solid var(--line);border-radius:10px;background:var(--surface);overflow:hidden}
+.prow{border-bottom:1px solid var(--line)} .prow:last-child{border-bottom:0}
+.prow>button{display:grid;grid-template-columns:52px minmax(0,1fr) auto 18px;gap:14px;align-items:center;width:100%;padding:13px 16px;background:none;border:0;color:var(--fg);font:inherit;text-align:left;cursor:pointer}
+.prow>button:hover{background:var(--sunken)}
+.prow .yr{font:500 12.5px var(--font-mono);color:var(--muted)}
+.prow .tt b{display:block;font-weight:600;font-size:15px}
+.prow .tt span{font:500 12px var(--font-mono);color:var(--muted)}
+.prow .tl{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+.prow .chev{color:var(--muted);transition:transform .2s}
+.prow[aria-expanded="true"] .chev{transform:rotate(90deg)}
+.prow .body{display:none;padding:0 16px 16px 82px;font-size:14.5px}
+.prow[aria-expanded="true"] .body{display:block}
+.prow .body p{margin:0 0 10px;max-width:72ch}
+@media (max-width:640px){ .prow>button{grid-template-columns:44px minmax(0,1fr) 18px} .prow .tl{display:none} .prow .body{padding-left:16px} }
 
 /* experience */
 .timeline{display:flex;flex-direction:column;border-left:2px solid var(--line);margin-left:6px}
@@ -206,10 +226,19 @@ table.df{width:100%;border-collapse:collapse;font:400 13.5px var(--font-mono);fo
 .job h3{margin:2px 0 6px}
 .job h3 small{font:500 14px var(--font-body);color:var(--muted)}
 .job ul{margin:0;padding-left:18px;max-width:70ch}
-.edu{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:8px}
-.edu div{border-top:2px solid var(--fg);padding-top:10px}
-.edu .when{font:500 12px var(--font-mono);color:var(--muted)}
-.edu p{margin:6px 0 0;font-size:14.5px;color:var(--muted)}
+.edu{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:10px;position:relative}
+@media (max-width:900px){ .edu{grid-template-columns:minmax(0,1fr)} }
+.educ{display:flex;flex-direction:column;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px}
+.educ.now{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 14%,transparent)}
+.educ .top{display:flex;align-items:center;gap:12px;margin-bottom:4px}
+.badge{flex:none;width:46px;height:46px;border-radius:10px;display:grid;place-items:center;font:800 13px var(--font-display);letter-spacing:.02em;background:var(--sunken);color:var(--fg);border:1px solid var(--line)}
+.educ.now .badge{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.educ .when{font:500 12px var(--font-mono);color:var(--muted)}
+.educ h3{font-size:1.08rem}
+.educ .sch{font-weight:500}
+.educ p{margin:4px 0 0;font-size:14px;color:var(--muted)}
+.edu-h{display:flex;align-items:baseline;gap:12px;margin:34px 0 4px}
+.edu-h h3{font-size:1.35rem}
 
 /* activities */
 .acts{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px 24px}
@@ -343,14 +372,12 @@ transcript.<span class="k">describe</span>()</div>
     <div>
       <div class="head">
         <div>
-          <h2>Skills, with evidence</h2>
-          <p>Each cell counts the subjects, projects and jobs where I used a skill, by year. Click a skill to see the projects behind it.</p>
+          <h2>Skills</h2>
+          <p>Grouped by what I use them for. The dots show how many subjects, projects and jobs I've used each skill in. Click a skill to see the projects behind it.</p>
         </div>
       </div>
-      <div class="skills-grid">
-        <div class="heat" id="heat"></div>
-        <div class="toolbox" id="toolbox"></div>
-      </div>
+      <div class="skillcats" id="skillcats"></div>
+      <div class="toolstrip" id="toolbox"></div>
     </div>
   </section>
 
@@ -368,7 +395,7 @@ transcript.<span class="k">describe</span>()</div>
         <label class="search" for="q"><span>grep</span><input id="q" type="search" placeholder="python, sql, nlp…" autocomplete="off"></label>
         <div class="chips" id="projChips" role="group" aria-label="Filter projects"></div>
       </div>
-      <div class="grid" id="cards"></div>
+      <div id="cards"></div>
     </div>
   </section>
 
@@ -407,7 +434,7 @@ transcript.<span class="k">describe</span>()</div>
     <div>
       <div class="head"><div><h2>Experience</h2><p>Reporting, e-commerce and customer-facing roles that taught me what the people using data actually need.</p></div></div>
       <div class="timeline" id="jobs"></div>
-      <h3 style="margin:28px 0 6px">Education</h3>
+      <div class="edu-h"><h3>Education</h3></div>
       <div class="edu" id="edu"></div>
     </div>
   </section>
@@ -552,24 +579,26 @@ D.experience.forEach(function(x){ (x.skills||[]).forEach(function(s){ add(s,"Wor
 function total(s){ return cols.reduce(function(a,c){return a+((ev[s][c]||[]).length);},0); }
 var skillRows=Object.keys(ev).sort(function(a,b){return total(b)-total(a) || a.localeCompare(b);}).slice(0,16);
 var maxC=1; skillRows.forEach(function(s){ cols.forEach(function(c){ maxC=Math.max(maxC,(ev[s][c]||[]).length); }); });
+var SKCATS=[
+  ["AI & machine learning",["Machine learning","Deep learning","Classification","NLP","Computer vision","Model evaluation","Feature engineering","Search algorithms","Explainable AI","Knowledge representation"]],
+  ["Data & analytics",["Data cleaning","Data mining","Data visualisation","Dashboard design","Web analytics","Reporting","Data validation","Spatial data","Text processing"]],
+  ["Databases & big data",["SQL","NoSQL","Database design","Data modelling","Query optimisation","Database programming","Database security","Data warehousing","Dimensional modelling","MapReduce","Distributed processing"]],
+  ["Programming & web",["Python","Java","OOP","Algorithms","Data structures","Complexity analysis","Simulation","HTML / CSS","JavaScript","XML / JSON","API development"]],
+  ["Delivery & teamwork",["Agile / Scrum","Teamwork","UML","Software testing","CI/CD & DevOps","Project management","Requirements analysis"]]
+];
 function drawHeat(){
-  var t='<table><thead><tr><th>skill</th>'+cols.map(function(c){return "<th>"+c+"</th>";}).join("")+'<th>Σ</th></tr></thead><tbody>';
-  skillRows.forEach(function(s){
-    t+='<tr data-s="'+esc(s)+'" tabindex="0"><td class="sk">'+esc(s)+'</td>';
-    cols.forEach(function(c){
-      var n=(ev[s][c]||[]).length, pct=n?Math.round(18+82*n/maxC):0;
-      var bg=n?"color-mix(in srgb, var(--accent) "+pct+"%, var(--surface))":"var(--sunken)";
-      var fg=pct>55?"var(--accent-ink)":"var(--fg)";
-      t+='<td><div class="cellbox" title="'+esc(n?(ev[s][c].join(", ")):"none")+'" style="background:'+bg+';color:'+fg+'">'+(n||"")+'</div></td>';
-    });
-    t+='<td class="mono" style="color:var(--muted);font-size:12px">'+total(s)+'</td></tr>';
-  });
-  t+='</tbody></table>';
-  $("#heat").innerHTML=t;
-  $("#heat").querySelectorAll("tr[data-s]").forEach(function(tr){
-    function go(){ filterSkill(tr.dataset.s); scrollToId("projects"); }
-    tr.addEventListener("click", go); tr.addEventListener("keydown", function(e){ if(e.key==="Enter") go(); });
-  });
+  var placed={}; SKCATS.forEach(function(c){ c[1].forEach(function(k){ placed[k]=1; }); });
+  var cats=SKCATS.map(function(c){ return [c[0], c[1].filter(function(k){return ev[k];})]; });
+  var rest=Object.keys(ev).filter(function(k){return !placed[k];}); if(rest.length) cats.push(["Business & other tech", rest]);
+  var maxT=Math.max.apply(null,Object.keys(ev).map(total));
+  $("#skillcats").innerHTML=cats.filter(function(c){return c[1].length;}).map(function(c){
+    var list=c[1].slice().sort(function(a,b){return total(b)-total(a)||a.localeCompare(b);}).slice(0,7);
+    return '<div class="scat"><h3>'+esc(c[0])+'<span>'+c[1].length+' skills</span></h3>'+list.map(function(k){
+      var t=total(k), on=Math.max(1,Math.round(5*t/maxT)), src=[]; cols.forEach(function(cc){ src=src.concat(ev[k][cc]||[]); });
+      return '<button type="button" class="srow" data-s="'+esc(k)+'" title="'+esc("Used in: "+src.join(", "))+'"><span class="nm">'+esc(k)+'</span><span class="dots" aria-label="'+t+' uses">'+[0,1,2,3,4].map(function(i){return '<i class="'+(i<on?"on":"")+'"></i>';}).join("")+'</span></button>';
+    }).join("")+'</div>';
+  }).join("");
+  $("#skillcats").querySelectorAll(".srow").forEach(function(b){ b.addEventListener("click",function(){ filterSkill(b.dataset.s); scrollToId("projects"); }); });
 }
 (function toolbox(){
   var tools={}; mods.concat(D.projects).forEach(function(x){ (x.tools||[]).forEach(function(t){ tools[t]=1; }); });
@@ -579,7 +608,7 @@ function drawHeat(){
               ["Notebooks, cloud & project tools", Object.keys(tools).filter(function(t){return ["Google Colab","Jupyter","Azure","ProjectLibre","Asana","GanttPRO","Taiga"].indexOf(t)>-1;})]];
   Object.keys(D.otherSkills||{}).forEach(function(k){ groups.push([k, D.otherSkills[k]]); });
   groups.push(["Languages spoken", P.languages]);
-  $("#toolbox").innerHTML = groups.filter(function(g){return g[1].length;}).map(function(g){ return "<div><h3>"+esc(g[0])+'</h3><div class="chips">'+g[1].map(function(t){return '<span class="tag">'+esc(t)+"</span>";}).join("")+"</div></div>"; }).join("");
+  $("#toolbox").innerHTML = groups.filter(function(g){return g[1].length;}).map(function(g){ return "<div><h4>"+esc(g[0])+'</h4><div class="chips">'+g[1].map(function(t){return '<span class="tag">'+esc(t)+"</span>";}).join("")+"</div></div>"; }).join("");
 })();
 
 /* ---------- projects ---------- */
@@ -596,27 +625,41 @@ function renderChips(){
 $("#projChips").addEventListener("click", function(e){ var b=e.target.closest(".chip"); if(!b) return; if(b.dataset.c==="__skill"){ pskill=null; } else { pskill=null; pcat=b.dataset.c; } renderChips(); renderCards(); });
 $("#q").addEventListener("input", renderCards);
 function filterSkill(s){ pskill=s; pcat="All"; $("#q").value=""; renderChips(); renderCards(); }
+var openProj=null;
+function tagsHtml(p){ return (p.module?'<button type="button" class="tag linkish" style="text-decoration:none;color:var(--accent)" data-m="'+p.module+'">'+esc(modName(p.module))+'</button>':'')+(p.tools||[]).map(function(t){return '<span class="tag">'+esc(t)+'</span>';}).join(""); }
+function linksHtml(p){ return (p.links&&p.links.length?'<div class="chips">'+p.links.map(function(l){return '<a class="chip" href="'+esc(l.url)+'" target="_blank" rel="noopener">'+esc(l.label)+' ↗</a>';}).join("")+'</div>':''); }
 function renderCards(){
   var q=$("#q").value.trim().toLowerCase();
   var list=D.projects.filter(function(p){
     if(pskill && (p.skills||[]).indexOf(pskill)<0) return false;
     if(!pskill && pcat!=="All" && !(p.skills||[]).some(function(s){return CATS[pcat].indexOf(s)>-1;})) return false;
     if(q && projText(p).indexOf(q)<0) return false; return true;
-  }).sort(function(a,b){ return (b.featured?1:0)-(a.featured?1:0) || b.year-a.year; });
+  });
   var g=$("#cards");
   if(!list.length){ g.innerHTML='<div class="empty">No projects match. Clear the filter to see all '+D.projects.length+'.</div>'; return; }
-  g.innerHTML=list.map(function(p){
-    return '<article class="card'+(p.featured?" feat":"")+'" id="p-'+p.id+'">'+
-      '<div class="meta"><span>'+esc(p.kind||"")+'</span><span>'+(p.status?'<span class="pill">'+esc(p.status)+'</span> ':'')+p.year+'</span></div>'+
-      '<h3>'+esc(p.title)+'</h3><p>'+esc(p.summary)+'</p>'+
-      (p.metrics&&p.metrics.length?'<div class="metrics">'+p.metrics.map(function(x){return '<div><b title="'+esc(x.v)+'">'+esc(x.v)+'</b><span>'+esc(x.k)+'</span></div>';}).join("")+'</div>':'')+
-      '<div class="tags">'+(p.module?'<button type="button" class="tag linkish" style="text-decoration:none;color:var(--accent)" data-m="'+p.module+'">'+esc(modName(p.module))+'</button>':'')+(p.tools||[]).map(function(t){return '<span class="tag">'+esc(t)+'</span>';}).join("")+'</div>'+
-      (p.links&&p.links.length?'<div class="chips">'+p.links.map(function(l){return '<a class="chip" href="'+esc(l.url)+'" target="_blank" rel="noopener">'+esc(l.label)+' ↗</a>';}).join("")+'</div>':'')+
-      '</article>';
-  }).join("");
+  var feat=list.filter(function(p){return p.featured;}).sort(function(a,b){ return (b.id==="vigilex")-(a.id==="vigilex") || b.year-a.year; });
+  var rest=list.filter(function(p){return !p.featured;}).sort(function(a,b){ return b.year-a.year || (a.title<b.title?-1:1); });
+  var html='';
+  if(feat.length){
+    html+='<div class="bento">'+feat.map(function(p,i){
+      var hero=(i===0 && feat.length%2===1);
+      var nums=(p.metrics||[]).length?'<div class="bignums">'+p.metrics.map(function(x){return '<div><b title="'+esc(x.v)+'">'+esc(x.v)+'</b><span>'+esc(x.k)+'</span></div>';}).join("")+'</div>':'';
+      var main='<div class="kind"><span>'+esc(p.kind||"")+'</span><span>'+(p.status?'<span class="pill">'+esc(p.status)+'</span> ':'')+p.year+'</span></div><h3>'+esc(p.title)+'</h3><p>'+esc(p.summary)+'</p>';
+      if(hero) return '<article class="feat hero-p" id="p-'+p.id+'"><div style="display:flex;flex-direction:column;gap:12px;min-width:0">'+main+'<div class="tagrow">'+tagsHtml(p)+'</div>'+linksHtml(p)+'</div>'+nums+'</article>';
+      return '<article class="feat" id="p-'+p.id+'">'+main+nums+'<div class="tagrow">'+tagsHtml(p)+'</div>'+linksHtml(p)+'</article>';
+    }).join("")+'</div>';
+  }
+  if(rest.length){
+    html+='<div class="sub-h">'+(feat.length?'More projects':'Projects')+' · '+rest.length+'</div><div class="plist">'+rest.map(function(p){
+      return '<div class="prow" id="p-'+p.id+'" aria-expanded="'+(openProj===p.id)+'"><button type="button" data-open="'+p.id+'" aria-controls="pb-'+p.id+'"><span class="yr">'+p.year+'</span><span class="tt"><b>'+esc(p.title)+'</b><span>'+esc(p.kind||"")+'</span></span><span class="tl">'+(p.tools||[]).slice(0,3).map(function(t){return '<span class="tag">'+esc(t)+'</span>';}).join("")+'</span><span class="chev" aria-hidden="true">›</span></button>'+
+        '<div class="body" id="pb-'+p.id+'"><p>'+esc(p.summary)+'</p><div class="tagrow">'+tagsHtml(p)+'</div>'+linksHtml(p)+'</div></div>';
+    }).join("")+'</div>';
+  }
+  g.innerHTML=html;
   g.querySelectorAll("[data-m]").forEach(function(b){ b.addEventListener("click", function(){ openModule(b.dataset.m); }); });
+  g.querySelectorAll("[data-open]").forEach(function(b){ b.addEventListener("click", function(){ var id=b.dataset.open; openProj = openProj===id?null:id; g.querySelectorAll(".prow").forEach(function(r){ r.setAttribute("aria-expanded", String(r.id==="p-"+openProj)); }); }); });
 }
-function showProject(id){ pskill=null; pcat="All"; $("#q").value=""; renderChips(); renderCards(); var el=document.getElementById("p-"+id); if(el){ el.scrollIntoView({block:"center",behavior:"smooth"}); el.animate&&el.animate([{boxShadow:"0 0 0 3px "+css("--accent")},{boxShadow:"0 0 0 0 transparent"}],{duration:1400}); } }
+function showProject(id){ pskill=null; pcat="All"; $("#q").value=""; openProj=id; renderChips(); renderCards(); var el=document.getElementById("p-"+id); if(el){ el.scrollIntoView({block:"center",behavior:"smooth"}); el.animate&&el.animate([{boxShadow:"0 0 0 3px "+css("--accent")},{boxShadow:"0 0 0 0 transparent"}],{duration:1400}); } }
 
 
 /* ---------- CNN explainer ---------- */
@@ -706,7 +749,7 @@ window.__cnnRun=run;
 
 /* ---------- experience, education, activities ---------- */
 $("#jobs").innerHTML = D.experience.map(function(x){ return '<div class="job"><div class="when">'+esc(x.period)+'</div><h3>'+esc(x.role)+(x.org?' <small>· '+esc(x.org)+'</small>':'')+'</h3><ul>'+x.points.map(function(p){return "<li>"+esc(p)+"</li>";}).join("")+'</ul></div>'; }).join("");
-$("#edu").innerHTML = D.education.map(function(e){ return '<div><div class="when">'+esc(e.period)+'</div><h3>'+esc(e.award)+'</h3><div>'+esc(e.school)+'</div><p>'+esc(e.note)+'</p></div>'; }).join("");
+$("#edu").innerHTML = D.education.map(function(e,i){ var b=e.badge||e.school.replace(/\(.*?\)/g,"").split(/[\s–-]+/).filter(function(w){return /^[A-Z]/.test(w);}).map(function(w){return w[0];}).join("").slice(0,3); return '<div class="educ'+(i===0?" now":"")+'"><div class="top"><span class="badge" aria-hidden="true">'+esc(b)+'</span><div><div class="when">'+esc(e.period)+'</div>'+(i===0?'<span class="pill">current</span>':'')+'</div></div><h3>'+esc(e.award)+'</h3><div class="sch">'+esc(e.school)+'</div><p>'+esc(e.note)+'</p></div>'; }).join("");
 $("#acts").innerHTML = D.activities.map(function(a){ return "<div><b>"+esc(a.title)+"</b><span>"+esc(a.detail)+"</span></div>"; }).join("");
 
 /* ---------- console ---------- */

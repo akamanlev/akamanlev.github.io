@@ -31,19 +31,19 @@ window.PORTFOLIO = {
 
   education: [
     {
-      school: "SIM – University of Wollongong (UOW)",
+      school: "SIM – University of Wollongong (UOW)", badge: "UOW",
       award: "Bachelor of Computer Science, Big Data major",
       period: "2024 – Feb 2027 (expected)",
       note: "Coursework spans machine learning, big data mining and management, databases and software engineering, ending with the Vigilex capstone."
     },
     {
-      school: "Nanyang Polytechnic",
+      school: "Nanyang Polytechnic", badge: "NYP",
       award: "Diploma in Business Management",
       period: "2020 – 2023",
       note: "Specialised in Digital Communications and E-commerce & Retail Management."
     },
     {
-      school: "Mayflower Secondary School",
+      school: "Mayflower Secondary School", badge: "MSS",
       award: "GCE O-Level",
       period: "2016 – 2019",
       note: "President of the Chinese Dance Club; SYF 2017 Certificate of Distinction; Merit Award for Leaders."
