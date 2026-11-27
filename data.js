@@ -253,6 +253,6 @@ window.PORTFOLIO = {
     "Data visualisation": ["Tableau"],
     "Design & content": ["Canva", "Adobe Photoshop", "Snapseed", "iMovie"],
     "Web & commerce": ["Shopify", "Wix", "Google Analytics"],
-    "Dev tools & AI": ["GitHub", "Visual Studio", "AI platforms"]
+    "Dev tools & AI": ["GitHub", "Visual Studio", "ChatGPT", "Claude"]
   }
 };
