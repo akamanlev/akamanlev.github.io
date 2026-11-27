@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap">
 <style>
-/* Layout: a Jupyter-style notebook. Every section is a cell with an In/Out gutter; data views are generated from data.js. */
+/* Layout: a Jupyter-style notebook. Data views are generated from data.js. */
 :root{
   --bg:#f3f6f6; --surface:#ffffff; --sunken:#e9eeef; --fg:#13222a; --muted:#566a73; --line:#d5dfe2;
   --accent:#15807b; --accent-ink:#ffffff; --accent-2:#45307e;
@@ -56,7 +56,7 @@ h3{font-size:1.15rem;font-weight:700}
 @media (max-width:760px){ .nav nav{display:none} .iconbtn{margin-left:auto} }
 
 /* cells */
-.cell{display:grid;grid-template-columns:var(--gutter) minmax(0,1fr);gap:0 20px;padding-block:56px;border-bottom:1px dashed var(--line)}
+.cell{display:grid;grid-template-columns:minmax(0,1fr);gap:0;padding-block:56px;border-bottom:1px dashed var(--line)}
 .cell:last-of-type{border-bottom:0}
 .prompt{font:500 12.5px/1.9 var(--font-mono);color:var(--muted);text-align:right;padding-top:4px;white-space:nowrap}
 .prompt b{color:var(--accent);font-weight:500}
@@ -310,7 +310,6 @@ footer{padding-block:28px 40px;color:var(--muted);font:400 12px var(--font-mono)
 
   <!-- HERO -->
   <section class="cell">
-    <div class="prompt">In [<b>1</b>]:</div>
     <div>
       <div class="hero">
         <div>
@@ -341,7 +340,6 @@ footer{padding-block:28px 40px;color:var(--muted);font:400 12px var(--font-mono)
 
   <!-- DESCRIBE -->
   <section class="cell">
-    <div class="prompt">In [<b>2</b>]:<br>Out[2]:</div>
     <div>
       <div class="code"><span class="c"># my degree so far, in one line</span>
 transcript.<span class="k">describe</span>()</div>
@@ -351,7 +349,6 @@ transcript.<span class="k">describe</span>()</div>
 
   <!-- COURSEWORK -->
   <section class="cell" id="coursework">
-    <div class="prompt">In [<b>3</b>]:<br>Out[3]:</div>
     <div>
       <div class="head">
         <div>
@@ -367,7 +364,6 @@ transcript.<span class="k">describe</span>()</div>
 
   <!-- SKILLS -->
   <section class="cell" id="skills">
-    <div class="prompt">In [<b>4</b>]:<br>Out[4]:</div>
     <div>
       <div class="head">
         <div>
@@ -382,7 +378,6 @@ transcript.<span class="k">describe</span>()</div>
 
   <!-- PROJECTS -->
   <section class="cell" id="projects">
-    <div class="prompt">In [<b>5</b>]:<br>Out[5]:</div>
     <div>
       <div class="head">
         <div>
@@ -400,7 +395,6 @@ transcript.<span class="k">describe</span>()</div>
 
   <!-- CNN -->
   <section class="cell" id="cnn">
-    <div class="prompt">In [<b>6</b>]:<br>Out[6]:</div>
     <div>
       <div class="head">
         <div>
@@ -429,7 +423,6 @@ transcript.<span class="k">describe</span>()</div>
 
   <!-- EXPERIENCE -->
   <section class="cell" id="experience">
-    <div class="prompt">In [<b>7</b>]:<br>Out[7]:</div>
     <div>
       <div class="head"><div><h2>Experience</h2><p>Reporting, e-commerce and customer-facing roles that taught me what the people using data actually need.</p></div></div>
       <div class="timeline" id="jobs"></div>
@@ -440,7 +433,6 @@ transcript.<span class="k">describe</span>()</div>
 
   <!-- ACTIVITIES -->
   <section class="cell">
-    <div class="prompt">In [<b>8</b>]:<br>Out[8]:</div>
     <div>
       <div class="head"><div><h2>Beyond class</h2></div></div>
       <div class="acts" id="acts"></div>
@@ -449,7 +441,6 @@ transcript.<span class="k">describe</span>()</div>
 
   <!-- CONSOLE -->
   <section class="cell" id="console">
-    <div class="prompt">In [<b>9</b>]:</div>
     <div>
       <div class="head"><div><h2>Console</h2><p>Query this portfolio from the command line. Type <span class="mono">help</span> to start.</p></div></div>
       <div class="term">
@@ -463,7 +454,6 @@ transcript.<span class="k">describe</span>()</div>
 
   <!-- CONTACT -->
   <section class="cell" id="contact">
-    <div class="prompt">In [<b>10</b>]:</div>
     <div>
       <div class="head"><div><h2>Let's talk</h2><p id="looking"></p></div></div>
       <div class="contact">
