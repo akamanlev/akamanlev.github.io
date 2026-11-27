@@ -22,8 +22,7 @@ window.PORTFOLIO = {
     location: "Singapore",
     email: "missmaypde@gmail.com",
     links: [
-      { label: "LinkedIn", url: "https://www.linkedin.com/in/may-yu-ya-maw-20501a1bb/" },
-      { label: "Instagram", url: "https://www.instagram.com/mayy_iiee/" }
+      { label: "LinkedIn", url: "https://www.linkedin.com/in/may-yu-ya-maw-20501a1bb/" }
     ],
     languages: ["English", "Mandarin", "Burmese"],
     lookingFor: "Data analyst, data science and web development roles (graduating Feb 2027)"
