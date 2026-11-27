@@ -253,6 +253,7 @@ window.PORTFOLIO = {
   otherSkills: {
     "Data visualisation": ["Tableau"],
     "Design & content": ["Canva", "Adobe Photoshop", "Snapseed", "iMovie"],
-    "Web & commerce": ["Shopify", "Wix", "Google Analytics"]
+    "Web & commerce": ["Shopify", "Wix", "Google Analytics"],
+    "Dev tools & AI": ["GitHub", "Visual Studio", "AI platforms"]
   }
 };
